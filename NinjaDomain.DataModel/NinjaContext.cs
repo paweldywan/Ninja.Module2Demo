@@ -8,6 +8,10 @@ namespace NinjaDomain.DataModel
 {
     public class NinjaContext : DbContext
     {
+        public NinjaContext() : base(@"Data Source=(LocalDb)\MSSQLLocalDB;Initial Catalog=NinjaDomain.DataModel.NinjaContext;Integrated Security=True")
+        {
+        }
+
         public DbSet<Ninja> Ninjas { get; set; }
         public DbSet<Clan> Clans { get; set; }
         public DbSet<NinjaEquipment> Equipment { get; set; }
