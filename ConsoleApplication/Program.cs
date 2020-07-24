@@ -3,10 +3,7 @@ using NinjaDomain.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApplication
 {
@@ -28,7 +25,8 @@ namespace ConsoleApplication
             //DeleteNinjaWithKeyValue();
             //DeleteNinjaViaStoredProcedure();
             //InsertNinjaWithEquipment();
-            SimpleNinjaGraphQuery();
+            //SimpleNinjaGraphQuery();
+            //ProjectionQuery();
 
             Console.ReadKey();
         }
@@ -246,8 +244,24 @@ namespace ConsoleApplication
             {
                 context.Database.Log = Console.WriteLine;
 
+                //var ninjas = context.Ninjas.Include(n => n.EquipmentOwned)
+                //    .FirstOrDefault(n => n.Name.StartsWith("Kacy"));
                 var ninja = context.Ninjas
                     .FirstOrDefault(n => n.Name.StartsWith("Kacy"));
+                Console.WriteLine("Ninja Retrieved:" + ninja.Name);
+                //context.Entry(ninja).Collection(n => n.EquipmentOwned).Load();
+                Console.WriteLine("Ninja Equipment Count: {0}", ninja.EquipmentOwned.Count());
+            }
+        }
+
+        private static void ProjectionQuery()
+        {
+            using (var context = new NinjaContext())
+            {
+                context.Database.Log = Console.WriteLine;
+                var ninjas = context.Ninjas
+                    .Select(n => new { n.Name, n.DateOfBirth, n.EquipmentOwned })
+                    .ToList();
             }
         }
     }
