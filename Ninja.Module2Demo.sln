@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeModelFromDB", "CodeMode
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication", "ConsoleApplication\ConsoleApplication.csproj", "{6066E74E-8E9A-45F2-804D-90CE9010BC1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication", "WpfApplication\WpfApplication.csproj", "{0D47319E-DB0D-4AEE-975D-DF40B0F2D688}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{6066E74E-8E9A-45F2-804D-90CE9010BC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6066E74E-8E9A-45F2-804D-90CE9010BC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6066E74E-8E9A-45F2-804D-90CE9010BC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D47319E-DB0D-4AEE-975D-DF40B0F2D688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D47319E-DB0D-4AEE-975D-DF40B0F2D688}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D47319E-DB0D-4AEE-975D-DF40B0F2D688}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D47319E-DB0D-4AEE-975D-DF40B0F2D688}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

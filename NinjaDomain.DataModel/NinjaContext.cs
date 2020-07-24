@@ -34,7 +34,9 @@ namespace NinjaDomain.DataModel
 
             int result = base.SaveChanges();
 
-            foreach (var history in ChangeTracker.Entries().OfType<IModificationHistory>())
+            foreach (var history in ChangeTracker.Entries()
+                                     .Where(e => e.Entity is IModificationHistory)
+                                     .Select(e => e.Entity as IModificationHistory))
             {
                 history.IsDirty = false;
             }

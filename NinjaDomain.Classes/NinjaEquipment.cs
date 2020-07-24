@@ -1,9 +1,10 @@
-﻿using System;
+﻿using NinjaDomain.Classes.Interfaces;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace NinjaDomain.Classes
 {
-    public class NinjaEquipment
+    public class NinjaEquipment : IModificationHistory
     {
         public int Id { get; set; }
         public string Name { get; set; }
