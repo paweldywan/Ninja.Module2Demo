@@ -1,22 +1,12 @@
 ﻿using NinjaDomain.Classes;
 using NinjaDomain.DataModel;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfApplication
 {
@@ -26,40 +16,61 @@ namespace WpfApplication
     public partial class MainWindow : Window
     {
         private readonly ConnectedRepository _repo = new ConnectedRepository();
+
         private Ninja _currentNinja;
+
         private bool _isLoading;
         private bool _isNinjaListChanging;
+
         private ObjectDataProvider _ninjaViewSource;
+
         private ObservableCollection<NinjaEquipment> _observableEquipment = new ObservableCollection<NinjaEquipment>();
 
         public MainWindow()
         {
             InitializeComponent();
+
             Style = (Style)FindResource(typeof(Window));
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _isLoading = true;
+
+
             ninjaListBox.ItemsSource = _repo.NinjasInMemory();
+
             SortNinjaList();
+
             clanComboBox.ItemsSource = _repo.GetClanList();
+
             _ninjaViewSource = ((ObjectDataProvider)(FindResource("ninjaViewSource")));
+
             ninjaListBox.SelectedIndex = 0;
+
+
             _isLoading = false;
         }
 
         private void SortNinjaList()
         {
             var dataView = CollectionViewSource.GetDefaultView(ninjaListBox.ItemsSource);
+
             dataView.SortDescriptions.Clear();
+
+
             var sd = new SortDescription("Name", ListSortDirection.Ascending);
+
             dataView.SortDescriptions.Add(sd);
+
+
             dataView.Refresh();
+
+
             ninjaListBox.SelectedItem = _currentNinja;
         }
 
-        private void ninjaListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void NinjaListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bool continueProcess;
 
@@ -75,9 +86,11 @@ namespace WpfApplication
             if (!continueProcess)
                 return;
 
+
             _currentNinja = _repo.GetNinjaWithEquipment((int)ninjaListBox.SelectedValue);
 
             RefreshNinja();
+
 
             _isNinjaListChanging = false;
         }
@@ -88,6 +101,7 @@ namespace WpfApplication
             {
                 var continueProcess = true;
 
+
                 if (_currentNinja != null)
                 {
                     if (_currentNinja.IsDirty)
@@ -97,16 +111,20 @@ namespace WpfApplication
                             case MessageBoxResult.Cancel:
                                 continueProcess = false;
                                 break;
+
                             case MessageBoxResult.Yes:
                                 _repo.Save();
                                 break;
+
                             case MessageBoxResult.No:
                                 break;
+
                             default:
                                 break;
                         }
                     }
                 }
+
 
                 return continueProcess;
             }
@@ -115,13 +133,24 @@ namespace WpfApplication
         private void RefreshNinja()
         {
             _isNinjaListChanging = true;
+
+
             _ninjaViewSource.ObjectInstance = _currentNinja;
+
+
             _observableEquipment = new ObservableCollection<NinjaEquipment>(_currentNinja.EquipmentOwned);
+
             equipmentOwnedDataGrid.ItemsSource = _observableEquipment;
+
             _observableEquipment.CollectionChanged += EquipmentCollectionChanged;
 
+
             clanComboBox.SelectedValue = _currentNinja.ClanId;
+
+
             _currentNinja.IsDirty = false;
+
+
             _isNinjaListChanging = false;
         }
 
@@ -135,21 +164,24 @@ namespace WpfApplication
             if (e.Action == NotifyCollectionChangedAction.Remove)
             {
                 _repo.DeleteEquipment(e.OldItems);
+
                 SetNinjaDirty();
             }
 
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 _currentNinja.EquipmentOwned.AddRange(e.NewItems.Cast<NinjaEquipment>());
+
                 SetNinjaDirty();
             }
         }
 
-        private void btnNewNinja_Click(object sender, RoutedEventArgs e)
+        private void BtnNewNinja_Click(object sender, RoutedEventArgs e)
         {
             if (ShouldRefresh)
             {
                 _currentNinja = _repo.NewNinja();
+
                 RefreshNinja();
             }
         }
@@ -160,11 +192,16 @@ namespace WpfApplication
             {
                 case MessageBoxResult.Yes:
                     var ninjaToDelete = _currentNinja;
+
                     ninjaListBox.SelectedIndex = 0;
+
                     _repo.DeleteCurrentNinja(ninjaToDelete);
+
                     break;
+
                 case MessageBoxResult.No:
                     break;
+
                 default:
                     break;
             }
@@ -178,7 +215,7 @@ namespace WpfApplication
             }
         }
 
-        private void clanComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ClanComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!_isLoading && !_isNinjaListChanging)
             {
@@ -188,29 +225,30 @@ namespace WpfApplication
             SetNinjaDirty();
         }
 
-        private void nameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void NameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetNinjaDirty();
         }
 
-        private void dateOfBirthDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void DateOfBirthDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             SetNinjaDirty();
         }
 
-        private void servedInOniwabanCheckBox_Checked(object sender, RoutedEventArgs e)
+        private void ServedInOniwabanCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             SetNinjaDirty();
         }
 
-        private void servedInOniwabanCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        private void ServedInOniwabanCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             SetNinjaDirty();
         }
 
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             _repo.Save();
+
             SortNinjaList();
         }
     }

@@ -13,20 +13,60 @@ namespace ConsoleApplication
         {
             _ = args;
 
+
             Database.SetInitializer(new NullDatabaseInitializer<NinjaContext>());
-            //InsertNinja();
-            //InsertMultipleNinjas();
-            //SimpleNinjaQueries();
-            //QueryAndUpdateNinja();
-            //QueryAndUpdateNinjaDisconnected();
-            //RetrieveDataWithFind();
-            //RetrieveDataWithStoredProc();
-            //DeleteNinja();
-            //DeleteNinjaWithKeyValue();
-            //DeleteNinjaViaStoredProcedure();
-            //InsertNinjaWithEquipment();
-            //SimpleNinjaGraphQuery();
-            //ProjectionQuery();
+
+
+            InsertNinja();
+
+            WriteSeparator();
+
+            InsertMultipleNinjas();
+
+            WriteSeparator();
+
+            SimpleNinjaQueries();
+
+            WriteSeparator();
+
+            QueryAndUpdateNinja();
+
+            WriteSeparator();
+
+            QueryAndUpdateNinjaDisconnected();
+
+            WriteSeparator();
+
+            RetrieveDataWithFind();
+
+            WriteSeparator();
+
+            RetrieveDataWithStoredProc();
+
+            WriteSeparator();
+
+            DeleteNinja();
+
+            WriteSeparator();
+
+            DeleteNinjaWithKeyValue();
+
+            WriteSeparator();
+
+            DeleteNinjaViaStoredProcedure();
+
+            WriteSeparator();
+
+            InsertNinjaWithEquipment();
+
+            WriteSeparator();
+
+            SimpleNinjaGraphQuery();
+
+            WriteSeparator();
+
+            ProjectionQuery();
+
 
             Console.ReadKey();
         }
@@ -47,6 +87,12 @@ namespace ConsoleApplication
                 context.Ninjas.Add(ninja);
                 context.SaveChanges();
             }
+        }
+
+        private static void WriteSeparator()
+        {
+            Console.WriteLine("---");
+            Console.ReadKey();
         }
 
         private static void InsertMultipleNinjas()
