@@ -11,109 +11,108 @@ using NinjaDomain.DataModel;
 
 namespace MVCAppRepository.Controllers
 {
-    public class NinjasController : Controller
+    public class NinjaEquipmentsController : Controller
     {
         private readonly DisconnectedRepository _repo = new DisconnectedRepository();
 
-        // GET: Ninjas
+        // GET: NinjaEquipments
         public ActionResult Index()
         {
-            var ninjas = _repo.GetNinjasWithClan();
-            return View(ninjas);
+            return View(_repo.GetEquipments());
         }
 
-        // GET: Ninjas/Details/5
+        // GET: NinjaEquipments/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ninja ninja = _repo.GetNinjaWithEquipmentAndClan(id.Value);
-            if (ninja == null)
+            NinjaEquipment ninjaEquipment = _repo.GetEquipmentById(id.Value);
+            if (ninjaEquipment == null)
             {
                 return HttpNotFound();
             }
-            return View(ninja);
+            return View(ninjaEquipment);
         }
 
-        // GET: Ninjas/Create
-        public ActionResult Create()
+        // GET: NinjaEquipments/Create
+        public ActionResult Create(int ninjaId)
         {
-            ViewBag.ClanId = new SelectList(_repo.GetClanList(), "Id", "ClanName");
+            ViewBag.NinjaId = ninjaId;
+
             return View();
         }
 
-        // POST: Ninjas/Create
+        // POST: NinjaEquipments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,ServedInOniwaban,ClanId,DateOfBirth,DateModified,DateCreated")] Ninja ninja)
+        public ActionResult Create([Bind(Include = "Id,Name,Type,DateModified,DateCreated")] NinjaEquipment ninjaEquipment)
         {
-            if (ModelState.IsValid)
+            if (!int.TryParse(Request.Form["NinjaId"], out int ninjaId))
             {
-                _repo.SaveNewNinja(ninja);
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            _repo.SaveNewEquipment(ninjaEquipment, ninjaId);
 
-            ViewBag.ClanId = new SelectList(_repo.GetClanList(), "Id", "ClanName", ninja.ClanId);
-            return View(ninja);
+            return RedirectToAction("Edit", "Ninjas", new { id = ninjaId });
         }
 
-        // GET: Ninjas/Edit/5
-        public ActionResult Edit(int? id)
+        // GET: NinjaEquipments/Edit/5
+        public ActionResult Edit(int? id, int ninjaId)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ninja ninja = _repo.GetNinjaWithEquipment(id.Value);
-            if (ninja == null)
+            ViewBag.NinjaId = ninjaId;
+            //ViewBag.NinjaName = name;
+            var ninjaEquipment = _repo.GetEquipmentById(id.Value);
+            if (ninjaEquipment == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ClanId = new SelectList(_repo.GetClanList(), "Id", "ClanName", ninja.ClanId);
-            return View(ninja);
+            return View(ninjaEquipment);
         }
 
-        // POST: Ninjas/Edit/5
+        // POST: NinjaEquipments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,ServedInOniwaban,ClanId,DateOfBirth,DateModified,DateCreated")] Ninja ninja)
+        public ActionResult Edit([Bind(Include = "Id,Name,Type,DateModified,DateCreated")] NinjaEquipment ninjaEquipment)
         {
-            if (ModelState.IsValid)
+            if (!int.TryParse(Request.Form["NinjaId"], out int ninjaId))
             {
-                _repo.SaveUpdatedNinja(ninja);
-                return RedirectToAction("Index");
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ViewBag.ClanId = new SelectList(_repo.GetClanList(), "Id", "ClanName", ninja.ClanId);
-            return View(ninja);
+            _repo.SaveUpdatedEquipment(ninjaEquipment);
+            return RedirectToAction("Edit", "Ninjas", new { id = ninjaId });
         }
 
-        // GET: Ninjas/Delete/5
+        // GET: NinjaEquipments/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Ninja ninja = _repo.GetNinjaWithEquipmentAndClan(id.Value);
-            if (ninja == null)
+            NinjaEquipment ninjaEquipment = _repo.GetEquipmentById(id.Value);
+            if (ninjaEquipment == null)
             {
                 return HttpNotFound();
             }
-            return View(ninja);
+            return View(ninjaEquipment);
         }
 
-        // POST: Ninjas/Delete/5
+        // POST: NinjaEquipments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _repo.DeleteNinja(id);
+            _repo.DeleteEquipment(id);
             return RedirectToAction("Index");
         }
 
