@@ -65,6 +65,10 @@
     <Compile Include="Migrations\202007241939393_AddModificationHistorySupport.designer.cs">
       <DependentUpon>202007241939393_AddModificationHistorySupport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202007281946232_StringLengthForName.cs" />
+    <Compile Include="Migrations\202007281946232_StringLengthForName.designer.cs">
+      <DependentUpon>202007281946232_StringLengthForName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NinjaContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202007241939393_AddModificationHistorySupport.resx">
       <DependentUpon>202007241939393_AddModificationHistorySupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202007281946232_StringLengthForName.resx">
+      <DependentUpon>202007281946232_StringLengthForName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
